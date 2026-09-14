@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "socksscope"
+dynamic = ["version"]
+description = "A SOCKS5 front-end that restricts and manages your traffic to keep it inside your engagement scope."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "LorenzMap" }]
+keywords = ["socks5", "proxy", "pentest", "dns", "scope", "security"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Information Technology",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: System :: Networking",
+]
+# floor is the version this was tested against
+dependencies = ["dnspython>=2.8"]
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-xdist>=3", "coverage>=7"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.coverage.run]
+source = ["socksscope"]
+parallel = true     # one data file per spawned process; `coverage combine` merges them
+sigterm = true      # the proxy fixture stops socksscope with terminate() (SIGTERM)
+branch = true
+
+[project.urls]
+Homepage = "https://github.com/LorenzMap/socksscope"
+Repository = "https://github.com/LorenzMap/socksscope"
+Issues = "https://github.com/LorenzMap/socksscope/issues"
+
+[project.scripts]
+socksscope = "socksscope:main"
+
+[tool.hatch.version]
+path = "socksscope.py"
+
+[tool.hatch.build.targets.wheel]
+only-include = ["socksscope.py"]
+
+[tool.hatch.build.targets.sdist]
+only-include = ["socksscope.py", "README.md", "CHANGELOG.md", "LICENSE"]
